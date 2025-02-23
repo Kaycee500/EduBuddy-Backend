@@ -6,12 +6,10 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "allowImportingTsExtensions": true,
     "moduleResolution": "node",
     "baseUrl": "./",
-    "types": ["node", "vite/client"]
+    "types": ["node"]
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "build", "dist", "**/*.test.ts"]
 }
-
