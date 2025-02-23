@@ -1,7 +1,7 @@
 import { WebSocketServer, WebSocket } from "ws";
 import type { Server } from "http";
-import type { CodeCollabMessage } from "../shared/schema";
-import { storage } from "./storage";
+import type { CodeCollabMessage } from "../shared/schema"; // Ensure schema.ts exists
+import { storage } from "./storage"; // Ensure storage.ts exports `storage`
 
 type Room = {
   participants: Map<number, WebSocket>;
@@ -65,8 +65,8 @@ export function setupWebSocket(server: Server) {
 
         switch (message.type) {
           case "join_room": {
-            userId = message.userId;
-            currentRoomId = message.roomId;
+            userId = message.userId ?? 0; // Ensure userId is never null
+            currentRoomId = message.roomId ?? ""; // Ensure roomId is never null
 
             if (!rooms.has(currentRoomId)) {
               rooms.set(currentRoomId, { participants: new Map() });
