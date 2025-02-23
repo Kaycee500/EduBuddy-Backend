@@ -1,4 +1,4 @@
-import Stripe from "stripe";
+import * as stripe from "stripe";
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error("STRIPE_SECRET_KEY environment variable is required");
