@@ -1,12 +1,15 @@
-import * as stripe from "stripe";
+import Stripe from "stripe";
 
 if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error("STRIPE_SECRET_KEY environment variable is required");
+  throw new Error("❌ STRIPE_SECRET_KEY environment variable is required");
 }
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2025-01-27.acacia", // Latest stable version as of Feb 2025
+// Initialize Stripe instance
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+  apiVersion: "2024-02-01", // Latest stable version
 });
+
+console.log("✅ Stripe initialized successfully!");
 
 export async function createPaymentIntent(amount: number): Promise<{
   clientSecret: string;
@@ -25,7 +28,7 @@ export async function createPaymentIntent(amount: number): Promise<{
       clientSecret: paymentIntent.client_secret!,
     };
   } catch (error: any) {
-    console.error("Stripe API error:", error);
+    console.error("❌ Stripe API error (createPaymentIntent):", error);
     return {
       clientSecret: "",
       error: error.message,
@@ -45,7 +48,7 @@ export async function createCustomerPortalSession(customerId: string): Promise<{
 
     return { url: session.url };
   } catch (error: any) {
-    console.error("Stripe API error:", error);
+    console.error("❌ Stripe API error (createCustomerPortalSession):", error);
     return {
       url: "",
       error: error.message,
@@ -75,17 +78,17 @@ export async function createSubscriptionCheckoutSession(
       ],
       success_url: successUrl,
       cancel_url: cancelUrl,
-      customer: customerId,
+      customer: customerId || undefined,
       customer_email: customerId ? undefined : email,
     });
 
     if (!session.url) {
-      throw new Error("Failed to create checkout session URL");
+      throw new Error("❌ Failed to create checkout session URL");
     }
 
     return { checkoutUrl: session.url };
   } catch (error: any) {
-    console.error("Stripe API error:", error);
+    console.error("❌ Stripe API error (createSubscriptionCheckoutSession):", error);
     return {
       error: error.message,
     };
@@ -115,7 +118,7 @@ export async function createOrRetrieveCustomer(email: string, name: string): Pro
 
     return { customerId: customer.id };
   } catch (error: any) {
-    console.error("Stripe API error:", error);
+    console.error("❌ Stripe API error (createOrRetrieveCustomer):", error);
     return {
       customerId: "",
       error: error.message,
