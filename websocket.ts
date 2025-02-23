@@ -1,6 +1,6 @@
 import { WebSocketServer, WebSocket } from "ws";
 import type { Server } from "http";
-import type { CodeCollabMessage } from "@shared/schema";
+import type { CodeCollabMessage } from "../shared/schema";
 import { storage } from "./storage";
 
 type Room = {
